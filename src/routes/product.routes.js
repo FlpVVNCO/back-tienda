@@ -14,7 +14,7 @@ import { createProductSchema } from "../schemas/product.schema.js";
 const router = Router();
 
 router.get("/product", authRequired, getProducts);
-router.get("/products", authRequired, getAllProducts);
+router.get("/products", getAllProducts);
 router.get("/product/:id", authRequired, getProduct);
 router.post(
   "/product",
