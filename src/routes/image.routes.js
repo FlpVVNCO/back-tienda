@@ -6,7 +6,7 @@ import { upload } from "../libs/multer.js";
 const router = Router();
 
 router.post('/upload' ,upload.single('image'), createImage)
-router.get('/upload' ,authRequired, getImage);
+router.get("/upload", getImage);
 
 
 export default router
