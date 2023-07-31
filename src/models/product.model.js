@@ -28,6 +28,14 @@ const productSchema = new mongoose.Schema(
       ref: "User",
       requiered: true,
     },
+    name_image: {
+      type: String,
+      // required: true
+    },
+    imageUrl: {
+      type: String,
+      // required: true
+    },
   },
   {
     timestamps: true,

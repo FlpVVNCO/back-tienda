@@ -10,6 +10,7 @@ import {
 } from "../controllers/product.controller.js";
 import { validateSchema } from "../middleware/validator.middeleware.js";
 import { createProductSchema } from "../schemas/product.schema.js";
+import { upload } from "../libs/multer.js";
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.get("/product/:id", authRequired, getProduct);
 router.post(
   "/product",
   authRequired,
+  upload.single("image"),
   validateSchema(createProductSchema),
   createProduct
 );
