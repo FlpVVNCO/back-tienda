@@ -20,11 +20,34 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
+export const getProductsByGenre = async (req, res) => {
+  try {
+    const { genre } = req.query;
+    const query = {};
+    // Dividir el parámetro "gender" en un array utilizando la coma como separador
+    const genders = genre.split(',');
+    // Construir una consulta para buscar productos que coincidan con cualquiera de los géneros proporcionados
+    if (genders.length === 1) {
+      // Si solo se proporciona un género, buscar productos con ese género
+      query.genre = genders[0];
+    } else {
+      // Si se proporcionan varios géneros, buscar productos que coincidan con cualquiera de los géneros
+      query.genre = { $in: genders };
+    }
+    const products = await Product.find(query);
+    res.json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong"  });
+  }
+}
+
 export const getProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate("user");
     if (!product) return res.status(404).json({ message: "Product not found" });
     res.json(product);
+
   } catch (error) {
     return res.status(404).json({ message: "Product not found" });
   }
@@ -32,7 +55,7 @@ export const getProduct = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, price, amount, date, imageName, imageUrl } =
+    const { name, description, genre, price, amount, date, imageName, imageUrl } =
       req.body;
 
     // buscar una mejor manera de obtener datos
@@ -42,6 +65,7 @@ export const createProduct = async (req, res) => {
     const newProduct = new Product({
       name,
       description,
+      genre, 
       price: priceNumber,
       amount: amountNumber,
       date,
